@@ -66,11 +66,56 @@ class Level1():
 		self.ghost_sprites= pygame.sprite.Group()
 		self.hero_sprites.add(Player(287, 439, hero_image_path))
 		for each in ghost_images_path:
-			role_name== 'Blinky':
-			player= Player(287, 199, each)
-			player.is_move= True
-			player.tracks= [[0, -0.5, 4], [0.5, 0, 9], [0, 0.5, 11], [0.5, 0, 3], [0, 0.5, 7], [-0.5, 0, 11], [0, 0.5, 3],
-							[0.5, 0, 15], [0, -0.5, 15], [0.5, 0, 3], [0, -0.5, 11], [-0.5, 0, 3], [0, -0.5, 11], [-0.5, 0, 3],
-							[0, -0.5, 3], [-0.5, 0, 7], [0, -0.5, 3], [0.5, 0, 15], [0, 0.5, 15], [-0.5, 0, 3], [0, 0.5, 3],
-							[-0.5, 0, 3], [0, -0.5, 7], [-0.5, 0, 3], [0, 0.5,7], [-0.5, 0, 11], [0, -0.5, 7], [0.5, 0, 5]]
-			self.ghost_sprites.add(player)
+			role_name= each.split('/')[-1].split('.')[0]
+			if role_name== 'Blinky':
+				player= Player(287, 199, each)
+				player.is_move= True
+				player.tracks= [[0, -0.5, 4], [0.5, 0, 9], [0, 0.5, 11], [0.5, 0, 3], [0, 0.5, 7], [-0.5, 0, 11], [0, 0.5, 3],
+								[0.5, 0, 15], [0, -0.5, 15], [0.5, 0, 3], [0, -0.5, 11], [-0.5, 0, 3], [0, -0.5, 11], [-0.5, 0, 3],
+								[0, -0.5, 3], [-0.5, 0, 7], [0, -0.5, 3], [0.5, 0, 15], [0, 0.5, 15], [-0.5, 0, 3], [0, 0.5, 3],
+								[-0.5, 0, 3], [0, -0.5, 7], [-0.5, 0, 3], [0, 0.5,7], [-0.5, 0, 11], [0, -0.5, 7], [0.5, 0, 5]]
+				self.ghost_sprites.add(player)
+
+			elif role_name== 'Clyde':
+				player= Player(319, 259, each)
+				player.is_move= True
+				player.track= [[-1, 0, 2], [0, -0.5, 4], [0.5, 0, 5], [0, 0.5, 7], [-0.5, 0, 11], [0, -0.5, 3],
+							   [-0.5, 0, 3], [0, 0.5, 7], [-0.5, 0, 7], [0, 0.5, 15], [0.5, 0, 15], [0, -0.5, 3],
+							   [-0.5, 0, 11], [0, -0.5, 7], [0.5, 0, 3], [0, -0.5, 11], [0.5, 0, 9]]
+				self.ghost_sprites.add(player)
+
+			elif role_name== 'Inky':
+				player= Player(255, 259, each)
+				player.is_move= True
+				player.tracks= [[1, 0, 2], [0 -0.5, 4], [0.5, 0, 10], [0, 0.5, 7], [0.5, 0, 3],	[0, -0.5, 3],
+								[0.5, 0, 3], [0, -0.5, 15], [-0.5, 0, 15], [0, 0.5, 3], [0.5, 0, 15], [0, 0.5, 11],
+								[-0.5, 0, 3], [0, -0.5, 7], [-0.5, 0, 11], [0, 0.5, 3], [-0.5, 0, 11], [0, 0.5, 7],
+								[-0.5, 0, 3], [0, -0.5, 3], [-0.5, 0, 3], [0, -0.5, 15], [0.5, 0, 15], [0, 0.5, 3],
+								[-0.5, 0, 15], [0, 0.5, 11], [0.5, 0, 3], [0, -0.5, 11], [0.5, 0, 11], [0, 0.5, 3], [0.5, 0, 1]]
+				self.ghost_sprites.add(player)
+
+			elif role_name== 'Pinky':
+				player= Player(287, 259, each)
+				player.is_move= True
+				player.tracks= [[0, -1, 4], [0.5, 0, 9], [0, 0.5, 11], [-0.5, 0, 23], [0, 0.5, 7], [0.5, 0, 3],
+								[0, -0.5, 3], [0.5, 0, 19], [0, 0.5, 3], [0.5, 0, 3], [0, 0.5, 3], [0.5, 0, 3],
+								[0, -0.5, 15], [-0.5, 0, 7], [0, 0.5, 3], [-0.5, 0, 19], [0, -0.5, 11], [0.5, 0, 9]]
+				self.ghost_sprites.add(player)
+		return self.ghost_sprites, self.ghost_sprites
+
+	def setupFood(self, food_color, bg_color):
+		self.food_sprites= pygame.sprite.Group()
+		for row in range(19):
+			for col in range(19):
+				if (row== 7 or row== 8) and (col== 8 or col== 9 or col== 10):
+					continue
+				else:
+					food= Food(30*col+32, 30*row+32, 4, 4, food_color, bg_color)
+					is_collide= pygame.sprite.spritecollide(food, self.wall_sprites, False)
+					if is_collide:
+						continue
+					is_collide= pygame.sprite.spritecollide(food, self.hero_sprites, False)
+					if is_collide:
+						continue
+					self.food_sprites.add(food)
+		return self.food_sprites
